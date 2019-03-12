@@ -2,27 +2,34 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import Page1 from './components/Page1'
+import AsyncComponent from './components/AsyncComponent'
+
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+  constructor(){
+    super();
+    this.state={
+      route: 'page1',
+      component: null
+    }
   }
+
+  onRouteChange=(route)=>{
+    this.setState({route: route})
+    console.log(route)
+  }
+
+  render() {
+    if(this.state.route==='page1'){
+      return <Page1 onRouteChange={this.onRouteChange} />
+    } else if(this.state.route==='page2'){
+        const AsyncPage2 = AsyncComponent(()=>import('./components/Page2'))
+        return <AsyncPage2 onRouteChange={this.onRouteChange}/>
+    } else if(this.state.route==='page3'){
+        const AsyncPage3 = AsyncComponent(()=>import('./components/Page3'))
+        return <AsyncPage3 onRouteChange={this.onRouteChange}/>
+      }
+    }
 }
 
 export default App;
